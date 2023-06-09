@@ -21,6 +21,7 @@ public:
 class Snake {
 public:
 	int dir_;
+	int length_;
 	Object body_[BODY_MAX];
 };
 
@@ -30,7 +31,6 @@ public:
 	int y_;
 	RectangleShape sprite_;
 };
-
 
 int main() {
 	const int WIDTH = 1000;
@@ -49,6 +49,7 @@ int main() {
 
 	Snake snake;
 	snake.dir_ = DIR_DOWN;
+	snake.length_ = 1;
 	for (int i = 0; i < BODY_MAX; i++) {
 		snake.body_[i].x_ = -100;
 		snake.body_[i].y_ = -100;
@@ -59,7 +60,7 @@ int main() {
 	}
 	snake.body_[0].x_ = 3;
 	snake.body_[0].y_ = 3;
-
+	
 	Apple apple;
 	apple.x_ = rand() % w;
 	apple.y_ = rand() % h;
@@ -98,50 +99,60 @@ int main() {
 		}
 		
 		// update
-
+		
 		// ¹ì ÀÌµ¿
 		if (snake.dir_ == DIR_UP) {
 			snake.body_[0].y_--;
 		}
-
+		
 		else if (snake.dir_ == DIR_DOWN) {
 			snake.body_[0].y_++;
 		}
-
+		
 		else if (snake.dir_ == DIR_LEFT) {
 			snake.body_[0].x_--;
 		}
-
+		
 		else if (snake.dir_ == DIR_RIGHT) {
 			snake.body_[0].x_++;
+		}
+
+		// ¸öÅë¿¡ ´ëÇÑ ÀÌµ¿
+		for (int i = snake.length_ - 1; i > 0; i--) {
+			snake.body_[i].x_ = snake.body_[i - 1].x_;
+			snake.body_[i].y_ = snake.body_[i - 1].y_;
+			snake.body_[i].sprite_.setPosition(snake.body_[i].x_ * block, snake.body_[i].y_ * block);
+
 		}
 
 		if (snake.body_[0].x_ < 0) snake.body_[0].x_ = 0;
 		if (snake.body_[0].x_ >= w) snake.body_[0].x_ = w - 1;
 		if (snake.body_[0].y_ < 0) snake.body_[0].y_ = 0;
 		if (snake.body_[0].y_ >= h) snake.body_[0].y_ = h - 1;
-
+		
 		for (int i = 0; i < BODY_MAX; i++) {
 			snake.body_[i].sprite_.setPosition(snake.body_[i].x_ * block, snake.body_[i].y_ * block);
 		}
 
-		// ¹ìÀÌ »ç°ú¸¦ ¸Ô¾úÀ» ¶§
+		// ¹ìÀÌ »ç°ú¸¦ ¸Ô¾úÀ» ¶§ ¸öÅë ±æ¾îÁü
+		// TODO : ±æÀÌ°¡ 1ÀÏ ¶§ µÎ ¹ø ¸Ô¾î¾ß ±æ¾îÁö´Â ¹ö±× °íÄ¡±â
 		if (snake.body_[0].x_ == apple.x_ && snake.body_[0].y_ == apple.y_)
 		{
 			apple.x_ = rand() % w;
 			apple.y_ = rand() % h;
 			apple.sprite_.setPosition(apple.x_ * block, apple.y_ * block);
+			snake.length_++;
 		}
-		
+
 		// render
 		window.clear();
-
+		
 		for (int i = 0; i < BODY_MAX; i++) {
 			window.draw(snake.body_[i].sprite_);
 		}
 
 		window.draw(apple.sprite_);	// ¹ì°ú »ç°ú°¡ °ãÄ¥°æ¿ì »ç°ú°¡ À§¿¡ ³ª¿È
-
+		
 		window.display();
 	}
 
