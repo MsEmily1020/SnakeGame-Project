@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <stdlib.h>			// srand(), read()
+#include <time.h>			// time()
 
 using namespace sf;
 
@@ -10,14 +12,16 @@ int main() {
 
 	srand(time(NULL));
 
+	int block = 40;
+
 	RectangleShape snake;
 	snake.setPosition(200, 300);
-	snake.setSize(Vector2f(30, 30));
+	snake.setSize(Vector2f(block, block));
 	snake.setFillColor(Color::Green);
 
 	RectangleShape apple;
-	apple.setPosition(rand() % 640 - 30, rand() % 480 - 30);
-	apple.setSize(Vector2f(30, 30));
+	apple.setPosition(rand() % 640 - block, rand() % 480 - block);
+	apple.setSize(Vector2f(block, block));
 	apple.setFillColor(Color::Red);
 
 	while (window.isOpen())
@@ -47,7 +51,7 @@ int main() {
 		// ¹ìÀÌ »ç°ú¸¦ ¸Ô¾úÀ» ¶§
 		if (snake.getGlobalBounds().intersects(apple.getGlobalBounds()))
 		{
-			apple.setPosition(rand() % 640 - 30, rand() % 480 - 30);
+			apple.setPosition(rand() % 640 - block, rand() % 480 - block);
 		}
 
 		// render
