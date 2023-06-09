@@ -93,7 +93,7 @@ int main() {
 		snake.setPosition(snake_x * block, snake_y * block);
 
 		// ¹ìÀÌ »ç°ú¸¦ ¸Ô¾úÀ» ¶§
-		if (snake.getGlobalBounds().intersects(apple.getGlobalBounds()))
+		if (snake_x == apple_x && snake_y == apple_y)
 		{
 			apple_x = rand() % w;
 			apple_y = rand() % h;
