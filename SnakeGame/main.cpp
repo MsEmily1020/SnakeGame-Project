@@ -40,6 +40,15 @@ int main() {
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 			snake.move(5, 0);
 		
+		// update
+
+		// ¹ìÀÌ »ç°ú¸¦ ¸Ô¾úÀ» ¶§
+		if (snake.getGlobalBounds().intersects(apple.getGlobalBounds()))
+		{
+			apple.setPosition(-500, -500);
+		}
+
+		// render
 		window.clear();
 
 		window.draw(snake);
