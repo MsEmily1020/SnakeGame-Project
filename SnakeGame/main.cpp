@@ -46,7 +46,7 @@ int main() {
 	window.setFramerateLimit(15);
 	
 	srand(time(NULL));
-
+	
 	Snake snake;
 	snake.dir_ = DIR_DOWN;
 	snake.length_ = 1;
@@ -97,10 +97,16 @@ int main() {
 		{
 			snake.dir_ = DIR_RIGHT;
 		}
-		
+
 		// update
-		
-		// 뱀 이동
+
+		// 몸통에 대한 이동
+		for (int i = snake.length_ - 1; i > 0; i--) {
+			snake.body_[i].x_ = snake.body_[i - 1].x_;
+			snake.body_[i].y_ = snake.body_[i - 1].y_;
+		}
+
+		// 머리에 대한 이동
 		if (snake.dir_ == DIR_UP) {
 			snake.body_[0].y_--;
 		}
@@ -117,23 +123,6 @@ int main() {
 			snake.body_[0].x_++;
 		}
 
-		// 몸통에 대한 이동
-		for (int i = snake.length_ - 1; i > 0; i--) {
-			snake.body_[i].x_ = snake.body_[i - 1].x_;
-			snake.body_[i].y_ = snake.body_[i - 1].y_;
-			snake.body_[i].sprite_.setPosition(snake.body_[i].x_ * block, snake.body_[i].y_ * block);
-
-		}
-
-		if (snake.body_[0].x_ < 0) snake.body_[0].x_ = 0;
-		if (snake.body_[0].x_ >= w) snake.body_[0].x_ = w - 1;
-		if (snake.body_[0].y_ < 0) snake.body_[0].y_ = 0;
-		if (snake.body_[0].y_ >= h) snake.body_[0].y_ = h - 1;
-		
-		for (int i = 0; i < BODY_MAX; i++) {
-			snake.body_[i].sprite_.setPosition(snake.body_[i].x_ * block, snake.body_[i].y_ * block);
-		}
-
 		// 뱀이 사과를 먹었을 때 몸통 길어짐
 		// TODO : 길이가 1일 때 두 번 먹어야 길어지는 버그 고치기
 		if (snake.body_[0].x_ == apple.x_ && snake.body_[0].y_ == apple.y_)
@@ -144,13 +133,22 @@ int main() {
 			snake.length_++;
 		}
 
+		if (snake.body_[0].x_ < 0) snake.body_[0].x_ = 0;
+		if (snake.body_[0].x_ >= w) snake.body_[0].x_ = w - 1;
+		if (snake.body_[0].y_ < 0) snake.body_[0].y_ = 0;
+		if (snake.body_[0].y_ >= h) snake.body_[0].y_ = h - 1;
+
+		for (int i = 0; i < snake.length_; i++) {
+			snake.body_[i].sprite_.setPosition(snake.body_[i].x_ * block, snake.body_[i].y_ * block);
+		}
 		// render
 		window.clear();
-		
+
 		for (int i = 0; i < BODY_MAX; i++) {
 			window.draw(snake.body_[i].sprite_);
 		}
 
+		
 		window.draw(apple.sprite_);	// 뱀과 사과가 겹칠경우 사과가 위에 나옴
 		
 		window.display();
