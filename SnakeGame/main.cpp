@@ -24,10 +24,16 @@ int main() {
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Up))
-			snake.move(0, -1);
-		
+			snake.move(0, -5);
+
 		if (Keyboard::isKeyPressed(Keyboard::Down))
-			snake.move(0, 1);
+			snake.move(0, 5);
+
+		if (Keyboard::isKeyPressed(Keyboard::Left))
+			snake.move(-5, 0);
+
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+			snake.move(5, 0);
 		
 		window.clear();
 		
