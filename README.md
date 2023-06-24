@@ -10,6 +10,23 @@
 
 ## 📃 Main Composition
 
+   - Snaek, Apple 객체 생성
+
+  ```C++
+  class Snake {
+  public:
+	  int dir_;
+	  int length_;
+	  Object body_[BODY_MAX];
+  };
+
+  class Apple {
+  public:
+	  int x_;
+	  int y_;
+	  RectangleShape sprite_;
+  };
+  ```
 
 ## 🎞 Snake Game
 
